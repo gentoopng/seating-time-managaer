@@ -55,6 +55,9 @@ class ArduinoAccessor:
     def sendData(cls, data):
         cls.ser.write(data.encode())
     
+    def resetBuffer(cls):
+        cls.ser.reset_input_buffer()
+    
     def setLEDMode(cls, mode):
         """
             mode 0: not sitting
