@@ -18,7 +18,7 @@ class SeatingDetector:
             print("注意: この設置場所では正しく計測できない可能性があります。\n超音波が反射するように設置場所を変えて再試行してください。\nできるだけ硬い面に相対させてください。\n")
 
     def check(cls, dist):
-        if (abs(cls.defaultDist - int(dist))) >= cls.threshold:
+        if (abs(int(cls.defaultDist) - int(dist))) >= cls.threshold:
             return True
         elif int(dist) >= cls.unmeasurable:
             return True
@@ -32,13 +32,13 @@ class SeatingDetector:
         if cls.previousTimeOfData == None:
             cls.previousTimeOfData = created
 
-        print(createdMin)
-        print(cls.minuteOfData)
+        # print(createdMin)
+        # print(cls.minuteOfData)
 
         result = None
 
         if createdMin != cls.minuteOfData:
-            result = cls.checkMinuteData(cls.minuteData, cls.previousTimeOfData)
+            result = cls.checkMinuteData(cls.minuteData, cls.previousTimeOfData, data["d2"])
             cls.minuteData = []
             cls.previousTimeOfData = created
 
@@ -46,7 +46,7 @@ class SeatingDetector:
         cls.minuteOfData = createdMin
         return result
 
-    def checkMinuteData(cls, minuteData, created):
+    def checkMinuteData(cls, minuteData, created, d2=""):
         count = 0
         length = len(minuteData)
         if length <= 1:
@@ -57,7 +57,7 @@ class SeatingDetector:
                 count += isSeating
             
             createdStr = datetime.strftime(created, "%Y-%m-%d %H:%M:00")
-            if count >= length / 2:
-                return {"created": createdStr, "d1": 1}
+            if count >= length * 3 / 4:
+                return {"created": createdStr, "d1": 1, "d2": int(d2)}
             else:
-                return {"created": createdStr, "d1": 0}
+                return {"created": createdStr, "d1": 0, "d2": int(d2)}
