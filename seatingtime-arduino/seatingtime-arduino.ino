@@ -28,6 +28,7 @@ void loop() {
    a=sr04.Distance();
    Serial.print(a);
    Serial.println("cm");
+   Serial.flush();
 
    int msg = Serial.read();
    Serial.read();
@@ -51,6 +52,7 @@ void loop() {
       break;
    }
    
-   delay(5000);
+   delay(2500);
    digitalWrite(LED_RED, LOW);
+   delay(2500);
 }
